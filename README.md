@@ -1,7 +1,7 @@
-#Introduction
+# Introduction
 svn-git is a power shell tool which migrates all branches and tags including all history from Subversion to Git.
 
-#Use svn-git
+# Use svn-git
 
 Open the MigSubversionToGit.ps1 and read the steps and comments to get familiar with the workflow. 
 
@@ -23,4 +23,4 @@ Here are all steps you will need to do:
 
 # Help
 
-Do not hesitate to ask questions or open Issues. 
+Do not hesitate to ask questions or open Issues.
