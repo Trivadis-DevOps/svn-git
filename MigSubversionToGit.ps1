@@ -28,7 +28,7 @@
 # For svn transport authentication (please read more at: https://git-scm.com/docs/git-svn)
 [string]$username = ""
 
-# 1. Created Loacl Folders 
+# 1. Created Local Folders 
 
 mkdir $($SVNLocalFolder + $SVNRepoName)
 mkdir $($GitLocalFolder + $GITRepoName)
@@ -41,9 +41,12 @@ $env:PATH += ';C:\Program Files\TortoiseSVN\bin'
 cd $($SVNLocalFolder + $SVNRepoName)
 svn.exe log $($SVNServerURL + $SVNRepoName) --quiet | ? { $_ -notlike '-*' } | % { ($_ -split ' \| ')[1] + ' = firstname lastname <firstname.lastname@domain.com>' } | Sort -Unique | Out-File -Encoding ascii  AuthorsMapping.txt
 
-# 2.1 edit authors mapping file and add the user with email ex. rg001234 = Ronny Gächter <Ronny.Gaechter@trivadis.com> 
+# 2.1 edit authors mapping file and add the user with email ex. user = Firstname Lastname <firstname.lastname@domain.com> 
 
-# 3. Clone GIT Repo to local Folder 
+Write-Host 'Please edit the Authors Mapping File and then press any key to continue...';
+$null = [System.Console]::ReadKey().Key.ToString();
+
+# 3. Clone Azure DevOps GIT Repo to local Folder 
 
 cd $($GitLocalFolder)
 # warning is ok because empty repository
@@ -53,17 +56,18 @@ git clone $GitRepoURL
 
 cd $($GitLocalFolder + $GITRepoName)
 
-git svn init $($SVNServerURL + $SVNRepoName) --stdlayout --username $username
+git svn init --stdlayout --username $username
 
-# 5. Fetch from SVN with the authors mapping file (can run over hours) 
+# 5. Fetch from SVN with the authors mapping file (can run over hours)
 
 git svn fetch -A $($SVNLocalFolder + $SVNRepoName + "\AuthorsMapping.txt")
 
 # 6. convert branch and tags 
 # show all references
+
 git for-each-ref --format='%(refname)' refs/remotes/origin/tags --sort='creatordate'
 
-# 6.1 for tags 
+# 6.1 for tags
 
 git for-each-ref --format='%(refname)' refs/remotes/origin/tags | % {
     #Extract the 5th field from every line 
@@ -90,6 +94,7 @@ git for-each-ref --format='%(refname)' refs/remotes/origin | % {
 			}
 	}
 
+	
 # show all created branches
 git branch -l
 
@@ -101,8 +106,13 @@ git branch -l
 # git config core.autocrlf false
 # git config core.autocrlf
 
-git push --all --progress
+git remote add upstream $GitRepoURL
+
+git push upstream --all --progress
 
 # 7.1 push all tags 
 
-git push --tags
+git push upstream --tags
+
+Write-Host 'Finished';
+$null = [System.Console]::ReadKey().Key.ToString();

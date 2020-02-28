@@ -3,7 +3,9 @@ svn-git is a power shell tool which migrates all branches and tags including all
 
 #Use svn-git
 
-Open the MigSubversionToGit.ps1 and edit the variables section. Fill out following variables:
+Open the MigSubversionToGit.ps1 and read the steps and comments to get familiar with the workflow. 
+
+Edit the variables section. Fill out following variables:
 
 * $SVNRepoName 
 * $SVNServerURL
@@ -12,6 +14,13 @@ Open the MigSubversionToGit.ps1 and edit the variables section. Fill out followi
 * $GITRepoName
 * $username
 
+##Manual Steps
+Here are all steps you will need to do:
+
+1. Init variables.
+2. Edit authors mapping file (you will find the mapping file located under your migration folder with subroot svn).
+3. Wait till the script finishes and check your Git repository. 
+
 # Help
 
-If the tool does not work for you, do not hesitate to ask questions, or open Issues. 
+Do not hesitate to ask questions or open Issues. 
